@@ -153,6 +153,7 @@
          flutterResult:result
        additionalButton:nil];
      });
+      return;
   }
   result([FlutterError errorWithCode:errorCode
                              message:authError.localizedDescription
