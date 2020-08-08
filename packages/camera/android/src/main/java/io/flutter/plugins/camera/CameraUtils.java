@@ -53,6 +53,9 @@ public final class CameraUtils {
       int sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
       details.put("sensorOrientation", sensorOrientation);
 
+      boolean flashAvailable = characteristics.get(CameraCharacteristics.FLASH_INFO_AVAILABLE);
+      details.put("flashAvailable", flashAvailable);
+
       int lensFacing = characteristics.get(CameraCharacteristics.LENS_FACING);
       switch (lensFacing) {
         case CameraMetadata.LENS_FACING_FRONT:

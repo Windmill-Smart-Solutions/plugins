@@ -38,6 +38,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import android.util.Log;
+
 
 public class Camera {
   private final SurfaceTextureEntry flutterTexture;
@@ -516,5 +518,19 @@ public class Camera {
             ? 0
             : (isFrontFacing) ? -currentOrientation : currentOrientation;
     return (sensorOrientationOffset + sensorOrientation + 360) % 360;
+  }
+
+  public void setFlashEnabled(boolean isFlashEnabled) {
+    try{
+      int enableFlash = CaptureRequest.FLASH_MODE_OFF;
+      if(isFlashEnabled) {
+        enableFlash =  CaptureRequest.FLASH_MODE_TORCH;
+      }
+
+      captureRequestBuilder.set(CaptureRequest.FLASH_MODE, enableFlash);
+      cameraCaptureSession.setRepeatingRequest(captureRequestBuilder.build(), null, null);
+    } catch (Exception ex){
+      Log.d("EXCEPTION_",ex.getMessage() );
+    }
   }
 }

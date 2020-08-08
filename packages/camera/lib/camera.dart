@@ -82,6 +82,7 @@ Future<List<CameraDescription>> availableCameras() async {
     return cameras.map((Map<dynamic, dynamic> camera) {
       return CameraDescription(
         name: camera['name'],
+        flashAvailable: camera['flashAvailable'],
         lensDirection: _parseCameraLensDirection(camera['lensFacing']),
         sensorOrientation: camera['sensorOrientation'],
       );
@@ -92,9 +93,14 @@ Future<List<CameraDescription>> availableCameras() async {
 }
 
 class CameraDescription {
-  CameraDescription({this.name, this.lensDirection, this.sensorOrientation});
+  CameraDescription(
+      {this.name,
+      this.flashAvailable,
+      this.lensDirection,
+      this.sensorOrientation});
 
   final String name;
+  final bool flashAvailable;
   final CameraLensDirection lensDirection;
 
   /// Clockwise angle through which the output image needs to be rotated to be upright on the device screen in its native orientation.
@@ -245,6 +251,7 @@ class CameraController extends ValueNotifier<CameraValue> {
     this.description,
     this.resolutionPreset, {
     this.enableAudio = true,
+    this.enableFlash = false,
   }) : super(const CameraValue.uninitialized());
 
   final CameraDescription description;
@@ -252,6 +259,7 @@ class CameraController extends ValueNotifier<CameraValue> {
 
   /// Whether to include audio when recording a video.
   final bool enableAudio;
+  final bool enableFlash;
 
   int _textureId;
   bool _isDisposed = false;
@@ -585,5 +593,10 @@ class CameraController extends ValueNotifier<CameraValue> {
       );
       await _eventSubscription?.cancel();
     }
+  }
+
+  void setFlashEnabled(bool enableFlash) {
+    final params = <String, dynamic>{'enableFlash': enableFlash};
+    _channel.invokeMethod('setFlashEnabled', params);
   }
 }

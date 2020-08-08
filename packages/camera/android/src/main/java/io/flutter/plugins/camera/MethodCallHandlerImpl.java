@@ -11,6 +11,7 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugins.camera.CameraPermissions.PermissionsRegistry;
 import io.flutter.view.TextureRegistry;
+import android.util.Log;
 
 final class MethodCallHandlerImpl implements MethodChannel.MethodCallHandler {
   private final Activity activity;
@@ -131,6 +132,16 @@ final class MethodCallHandlerImpl implements MethodChannel.MethodCallHandler {
           result.success(null);
           break;
         }
+
+      case "setFlashEnabled":{
+        boolean isFlashEnabled = call.argument("enableFlash");
+        Log.d("DEBUG_ ","got call setFlashEnabled: "+ isFlashEnabled );
+
+        if (camera != null) {
+          camera.setFlashEnabled(isFlashEnabled);
+        }
+        result.success(null);
+      }
       default:
         result.notImplemented();
         break;

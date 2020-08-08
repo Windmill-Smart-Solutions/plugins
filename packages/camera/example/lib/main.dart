@@ -43,6 +43,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
   VideoPlayerController videoController;
   VoidCallback videoPlayerListener;
   bool enableAudio = true;
+  bool enableFlash = false;
 
   @override
   void initState() {
@@ -103,6 +104,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
           ),
           _captureControlRowWidget(),
           _toggleAudioWidget(),
+          _toggleFlashWidget(),
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: Row(
@@ -150,6 +152,28 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
               enableAudio = value;
               if (controller != null) {
                 onNewCameraSelected(controller.description);
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _toggleFlashWidget() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 25),
+      child: Row(
+        children: <Widget>[
+          const Text('Enable Flash:'),
+          Switch(
+            value: enableFlash,
+            onChanged: (bool value) {
+              setState(() {
+                enableFlash = value;
+              });
+              if (controller != null) {
+                controller.setFlashEnabled(enableFlash);
               }
             },
           ),
